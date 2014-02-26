@@ -49,8 +49,11 @@ type CustomerParams struct {
 	// (Optional) An arbitrary string which you can attach to a customer object.
 	Desc string
 
-	// (Optional) Customer's Active Credit Card
+	// (Optional) Customer's Active Credit Card.  Sets and deletes the older default.
 	Card *CardParams
+
+	// (Optional) Change the default card by it's id.
+	DefaultCard string
 
 	// (Optional) Customer's Active Credid Card, using a Card Token
 	Token string
@@ -185,6 +188,9 @@ func appendCustomerParamsToValues(c *CustomerParams, values *url.Values) {
 	}
 	if c.Quantity != 0 {
 		values.Add("quantity", strconv.FormatInt(c.Quantity, 10))
+	}
+	if c.DefaultCard != "" {
+		values.Add("default_card", c.DefaultCard)
 	}
 
 	// add metadata, if specified
